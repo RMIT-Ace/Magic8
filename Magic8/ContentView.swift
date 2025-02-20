@@ -41,23 +41,29 @@ struct ContentView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Text("\(choicesArray[choiceNumber])")
-                .font(.system(size: 28, weight: .bold, design: .default))
-                .frame(maxWidth: .infinity, alignment: .center)
-                .frame(height: 60)
-                .lineLimit(2)
-                .padding(20)
-                .padding(.vertical, 20)
-                .background(.gray)
-                .clipShape(Capsule())
-                .padding(20)
+            predictionView()
+                .padding(0)
             ZStack {
                 ballImageView()
                 numberBallsView(currentNumber: predictionNumber, maxNumber: maxNumberOfBalls)
                 controlPanelView()
             }
+            .padding(0)
             .animation(.linear(duration: animationDelay), value: predictionNumber)
         }
+    }
+    
+    func predictionView() -> some View {
+        Text("\(choicesArray[choiceNumber])")
+            .font(.system(size: 28, weight: .bold, design: .default))
+            .frame(maxWidth: .infinity, alignment: .center)
+            .frame(height: 60)
+            .lineLimit(2)
+            .padding(20)
+            .padding(.vertical, 20)
+            .background(.gray.opacity(0.3))
+            .clipShape(RoundedRectangle(cornerRadius: 20))
+            .padding(.horizontal, 20)
     }
     
     func ballImageView() -> some View {
@@ -65,6 +71,7 @@ struct ContentView: View {
             .resizable()
             .foregroundStyle(.tint)
             .frame(width: 300, height: 300)
+            .clipShape(RoundedRectangle(cornerRadius: 20))
     }
     
     func controlPanelView() -> some View {
