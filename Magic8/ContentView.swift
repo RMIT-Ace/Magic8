@@ -33,16 +33,19 @@ let choicesArray = [
 struct ContentView: View {
     @State private var predictionNumber: Int = 3
     @State private var choiceNumber: Int = 0
-    @State private var annimationDelay: Double = 0.3
+    @State private var animationDelay: Double = 0.3
     
+    let animationPerNumber: Double = 0.3
     let innerBallWidth: CGFloat = 105
     let maxNumberOfBalls: Int = choicesArray.count
 
     var body: some View {
         VStack(spacing: 0) {
             Text("\(choicesArray[choiceNumber])")
-                .font(.system(size: 32, weight: .bold, design: .default))
+                .font(.system(size: 28, weight: .bold, design: .default))
                 .frame(maxWidth: .infinity, alignment: .center)
+                .frame(height: 60)
+                .lineLimit(2)
                 .padding(20)
                 .padding(.vertical, 20)
                 .background(.gray)
@@ -53,7 +56,7 @@ struct ContentView: View {
                 numberBallsView(currentNumber: predictionNumber, maxNumber: maxNumberOfBalls)
                 controlPanelView()
             }
-            .animation(.linear(duration: annimationDelay), value: predictionNumber)
+            .animation(.linear(duration: animationDelay), value: predictionNumber)
         }
     }
     
@@ -70,7 +73,9 @@ struct ContentView: View {
             Stepper(value: $predictionNumber, in: 0...maxNumberOfBalls - 1)  {
                 Button {
                     predictionNumber = Int.random(in: 0..<maxNumberOfBalls)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + annimationDelay) {
+                    let distance = abs(predictionNumber - choiceNumber)
+                    animationDelay = animationPerNumber / 2.0 * Double(distance)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + animationDelay) {
                         choiceNumber = predictionNumber
                     }
                 } label: {
@@ -80,7 +85,8 @@ struct ContentView: View {
                     Spacer()
                 }
             } onEditingChanged: { _ in
-                DispatchQueue.main.asyncAfter(deadline: .now() + annimationDelay) {
+                animationDelay = animationPerNumber
+                DispatchQueue.main.asyncAfter(deadline: .now() + animationDelay) {
                     choiceNumber = predictionNumber
                 }
             }
