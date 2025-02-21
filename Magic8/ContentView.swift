@@ -55,10 +55,11 @@ struct ContentView: View {
     
     func predictionView() -> some View {
         Text("\(choicesArray[choiceNumber])")
+            .lineLimit(2)
+            .fixedSize(horizontal: false, vertical: true)
             .font(.system(size: 28, weight: .bold, design: .default))
             .frame(maxWidth: .infinity, alignment: .center)
             .frame(height: 60)
-            .lineLimit(2)
             .padding(20)
             .padding(.vertical, 20)
             .background(.gray.opacity(0.3))
@@ -92,7 +93,8 @@ struct ContentView: View {
                     Spacer()
                 }
             } onEditingChanged: { _ in
-                animationDelay = animationPerNumber
+//                animationDelay = animationPerNumber
+                animationDelay = 0.1
                 DispatchQueue.main.asyncAfter(deadline: .now() + animationDelay) {
                     choiceNumber = predictionNumber
                 }
